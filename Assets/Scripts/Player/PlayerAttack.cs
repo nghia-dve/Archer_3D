@@ -85,7 +85,7 @@ public class PlayerAttack : MonoBehaviour
         transform.forward =new Vector3((lookEnemy - transform.position).x,0, (lookEnemy - transform.position).z);
         PlayerControl.Instance.checkAttackSword = false;
         PlayerControl.Instance.checkAttackMagic = true;
-        PlayerControl.Instance.animatorPlayer.SetFloat("fireRateMagic",   PlayerControl.Instance.fireRateFireBall);
+
     }
 
     

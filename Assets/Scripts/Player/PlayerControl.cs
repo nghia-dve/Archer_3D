@@ -49,16 +49,7 @@ public class PlayerControl : MonoBehaviour
     public FloatingJoystick joystick;
 
     [Header("==enemy==")]
-    public Transform enemys;
-
-    [Header("==FireBall==")]
-    public GameObject fireBall;
-
-    public float damgeMagic = 1;
-
-    public float speedFireBall = 2;
-
-    public float fireRateFireBall = 2f;
+    public Transform enemys;  
 
     [Header("==Sword==")]
 

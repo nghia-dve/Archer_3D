@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor (typeof (SearchPlayer))]
+/*[CustomEditor (typeof (SearchPlayer))]
 public class FieldOfViewEdittor : Editor
 {
     private void OnSceneGUI()
@@ -24,4 +24,4 @@ public class FieldOfViewEdittor : Editor
             Handles.DrawLine(searchPlayer.transform.position, item.position);
         }
     }
-}
+}*/

@@ -28,7 +28,6 @@ public class SearchPlayer : MonoBehaviour
 
     private void FindVisibleTagets()
     {
-        //VisibleTargets.Clear();
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
 
         for (int i = 0; i < targetsInViewRadius.Length; i++)

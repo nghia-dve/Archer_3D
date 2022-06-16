@@ -12,9 +12,6 @@ public class EnemyControl : MonoBehaviour
 
     public float countHP = 0;
 
-    [Header("==Anim==")]
-    public Animator animatorEnemy;
-
     [Header("==Die==")]
     public bool checkDie = false;
 
@@ -22,6 +19,18 @@ public class EnemyControl : MonoBehaviour
 
     [Header("==Move==")]
     public float moveSpeed = 1;
+
+    [Header("==combat==")]
+    public bool checkCloseCombat=false;
+
+    public float distanceCloseCombat = 1;
+
+    [Header("==clamp==")]
+    [SerializeField]
+    private float clampX = 4;
+
+    [SerializeField]
+    private float clampZ = 14f;
 
     [HideInInspector]
     public SearchPlayer searchPlayer;
@@ -32,12 +41,19 @@ public class EnemyControl : MonoBehaviour
     [HideInInspector]
     public Collider colliderEnemy;
 
+    [HideInInspector]
+    public EnemyAttack enemyAttack;
+
+    [HideInInspector]
+    public Animator animatorEnemy;
+
     private void Awake()
     {
         searchPlayer = GetComponent<SearchPlayer>();
         animatorEnemy = GetComponent<Animator>();
         rigidbodyEnemy = GetComponent<Rigidbody>();
-        transform.GetChild(0).GetComponent<Collider>();
+        colliderEnemy = transform.GetChild(0).GetComponent<Collider>();
+        enemyAttack= transform.GetChild(0).GetComponent<EnemyAttack>();
     }
 
 
@@ -47,19 +63,25 @@ public class EnemyControl : MonoBehaviour
         countHP = maxHP;
     }
 
+    private void Update()
+    {
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, -clampX, clampX),
+            Mathf.Clamp(transform.position.y, 0, 0), Mathf.Clamp(transform.position.z, -clampZ, clampZ));
+    }
+
     public void ChangeHPEnemy(float DMG)
     {
         countHP -= DMG;
         HP.transform.localScale = new Vector3(Mathf.Clamp(countHP/maxHP,0,1), 1, 1);
         if (HP.transform.localScale.x <= 0)
         {           
-            gameObject.transform.parent.gameObject.transform.parent = null;
+            transform.parent = null;
             colliderEnemy.enabled = false;
             Destroy(rigidbodyEnemy);
-            if (checkDie == false)
+            if (!checkDie)
             {
-                animatorEnemy.SetTrigger("die");
                 checkDie = true;
+                animatorEnemy.SetTrigger("die");
             }
             StartCoroutine(DeactiveAfterEnemy(timeDie));
         }
@@ -68,9 +90,10 @@ public class EnemyControl : MonoBehaviour
 
     private void GetHit()
     {
-        if (checkDie == false)
+        if (!checkDie)
         {
             animatorEnemy.SetTrigger("GetHit");
+            enemyAttack.checkAttack = false;
         }
         
     }
@@ -79,6 +102,6 @@ public class EnemyControl : MonoBehaviour
     private IEnumerator DeactiveAfterEnemy(float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        gameObject.transform.parent.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 }

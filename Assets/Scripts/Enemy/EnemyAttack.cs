@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
 {
-    private bool checkAttack = false;
+    [HideInInspector]
+    public bool checkAttack = false;
 
     private float DMGEnemy=2;
 
-    private float timeAttack = 0.833f;
+    private float timeAttack = 1;
 
     private EnemyControl enemyControl;
 
@@ -16,41 +17,53 @@ public class EnemyAttack : MonoBehaviour
     {
         enemyControl = transform.parent.GetComponent<EnemyControl>();
         timeAttack = enemyControl.animatorEnemy.GetFloat("timeAttack");
+        
     }
 
     private void Update()
     {
-        if (enemyControl.searchPlayer.VisibleTargets.Count > 0)
+        
+        if (enemyControl.searchPlayer.VisibleTargets.Count > 0&& enemyControl.checkDie == false)
         {
-            if (Vector3.Distance(transform.position, enemyControl.searchPlayer.VisibleTargets[0].position) <= 2)
+            if (enemyControl.checkCloseCombat)
             {
-                StartCoroutine(DelayAttack(timeAttack));
-                enemyControl.animatorEnemy.SetTrigger("enemyAttack");
+                if (Vector3.Distance(transform.position, enemyControl.searchPlayer.VisibleTargets[0].position) < enemyControl.distanceCloseCombat)
+                {
+                    DelayAttack();
+                    //Debug.LogError(timeAttack);
+                }
             }
-            if (Vector3.Distance(transform.position, enemyControl.searchPlayer.VisibleTargets[0].position) > 2)
+            if (!enemyControl.checkCloseCombat)
             {
-                checkAttack = true;
+                if (Vector3.Distance(transform.position, enemyControl.searchPlayer.VisibleTargets[0].position)< enemyControl.distanceCloseCombat + 7
+                    && Vector3.Distance(transform.position, enemyControl.searchPlayer.VisibleTargets[0].position) > enemyControl.distanceCloseCombat + 4)
+                {
+                    DelayAttack();
+                }
             }
         }
     }
     private void OnTriggerEnter(Collider other)
     {
         
-        if (other.CompareTag("Player")&&checkAttack)
+        if (other.CompareTag("Player")&&checkAttack&&enemyControl.checkCloseCombat)
         {
             PlayerControl.Instance.GetHit(DMGEnemy);
+            checkAttack = false;
         }
     }
-    /*private void OnTriggerStay(Collider other)
+    private void DelayAttack()
     {
-        if (other.CompareTag("Player") && checkAttack)
+        if (timeAttack<=0)
         {
-            Debug.LogError("trungStay");
+            enemyControl.animatorEnemy.SetTrigger("enemyAttack");
+            timeAttack = enemyControl.animatorEnemy.GetFloat("timeAttack");
+            checkAttack = true;
         }
-    }*/
-    private IEnumerator DelayAttack(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        checkAttack = true;
+        else
+        {
+            timeAttack -= Time.deltaTime;
+            
+        }    
     }
 }

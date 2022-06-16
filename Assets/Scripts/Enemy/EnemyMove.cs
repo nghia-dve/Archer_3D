@@ -6,6 +6,8 @@ public class EnemyMove : MonoBehaviour
 {
     private EnemyControl enemyControl;
 
+    
+
     private void Start()
     {
         enemyControl = GetComponent<EnemyControl>();
@@ -15,17 +17,38 @@ public class EnemyMove : MonoBehaviour
     {
         if (enemyControl.searchPlayer.VisibleTargets.Count > 0&&enemyControl.checkDie==false)
         {
-            transform.forward=(enemyControl.searchPlayer.VisibleTargets[0].position - transform.position);
-            if (Vector3.Distance(transform.position, enemyControl.searchPlayer.VisibleTargets[0].position) > 2)
+            transform.forward = /*Vector3.MoveTowards(transform.forward,*/(enemyControl.searchPlayer.VisibleTargets[0].position - transform.position)/*,2*Time.deltaTime)*/;
+            if (enemyControl.checkCloseCombat)
             {
-                enemyControl.animatorEnemy.SetTrigger("run");
-                transform.position += transform.forward*enemyControl.moveSpeed*Time.deltaTime;
-                if(enemyControl.rigidbodyEnemy != null)
-                    enemyControl.rigidbodyEnemy.isKinematic = false;
+                
+                if (Vector3.Distance(transform.position, enemyControl.searchPlayer.VisibleTargets[0].position) >= enemyControl.distanceCloseCombat)
+                {
+                    Move();
+                }
             }
+            if (!enemyControl.checkCloseCombat)
+            {
+                if (Vector3.Distance(transform.position, enemyControl.searchPlayer.VisibleTargets[0].position) >= enemyControl.distanceCloseCombat+7)
+                {
+                    Move();
+                }
+                if (Vector3.Distance(transform.position, enemyControl.searchPlayer.VisibleTargets[0].position) <= enemyControl.distanceCloseCombat + 4)
+                {
+                    transform.forward = /*Vector3.MoveTowards(transform.forward,*/ -(enemyControl.searchPlayer.VisibleTargets[0].position - transform.position)/*, 2 * Time.deltaTime)*/;
+                    Move();
+                }
+            }
+            /*transform.forward = Vector3.MoveTowards(transform.forward, (enemyControl.searchPlayer.VisibleTargets[0].position - transform.position), 2 * Time.deltaTime);*/
         }
     }
-
+    private void Move()
+    {
+        enemyControl.enemyAttack.checkAttack = false;
+        enemyControl.animatorEnemy.SetTrigger("run");
+        transform.position += transform.forward * enemyControl.moveSpeed * Time.deltaTime;
+        if (enemyControl.rigidbodyEnemy != null)
+            enemyControl.rigidbodyEnemy.isKinematic = false;
+    }
     private void OnCollisionEnter(Collision collision)
     {
         

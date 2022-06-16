@@ -157,6 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d35312b5501912443969afaa5e6fb086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  checkAttack: 0
 --- !u!1 &1292789949531180
 GameObject:
   m_ObjectHideFlags: 0
@@ -562,9 +563,12 @@ MonoBehaviour:
   checkDie: 0
   timeDie: 2
   moveSpeed: 1
+  checkCloseCombat: 1
+  distanceCloseCombat: 1
   searchPlayer: {fileID: 0}
   rigidbodyEnemy: {fileID: 0}
   colliderEnemy: {fileID: 0}
+  enemyAttack: {fileID: 0}
 --- !u!114 &5228658036031253192
 MonoBehaviour:
   m_ObjectHideFlags: 0
