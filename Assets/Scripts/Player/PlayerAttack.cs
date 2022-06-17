@@ -72,6 +72,12 @@ public class PlayerAttack : MonoBehaviour
         {
             /*checkAttackSword = false;
             checkAttackMagic = false;*/
+            UIManager.Instance.homeUI.ChangeLevel();
+            for (int i = 0; i < PlayerControl.Instance.listCubedis.Count; i++)
+            {
+                PlayerControl.Instance.listCubedis[i].SetActive(false);
+            }
+            PlayerControl.Instance.cubeActi.SetActive(true);
         }
 
     }

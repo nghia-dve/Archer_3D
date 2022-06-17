@@ -31,7 +31,7 @@ public class PlayerControl : MonoBehaviour
     [HideInInspector]
     public bool checkAttackMagic = false;
 
-    public SwordAttack swordAttack;
+   /* public SwordAttack swordAttack;*/
 
     [Header("==Player==")]
     public float moveSpeedPlayer = 3;
@@ -52,8 +52,15 @@ public class PlayerControl : MonoBehaviour
     public Transform enemys;  
 
     [Header("==Sword==")]
-
     public float damgeSword = 2;
+
+    [Header("==Magic==")]
+    public SpawnFireBall spawnFireBall;
+
+    [Header("==nextLevel==")]
+    public List<GameObject> listCubedis = new List<GameObject>();
+
+    public GameObject cubeActi ;
 
 
     private void Awake()
@@ -85,5 +92,19 @@ public class PlayerControl : MonoBehaviour
     public void GetHit(float DMGEnemy)
     {
         HPPlayer -= DMGEnemy;
+        HPPlayer = Mathf.Clamp(HPPlayer, 0, Mathf.Infinity);
+        UIManager.Instance.homeUI.ChangeHP();
+        if (HPPlayer <= 0)
+        {
+            UIManager.Instance.ScriptSettingUI.ResetGame();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("nextLevel"))
+        {
+            UIManager.Instance.ScriptSettingUI.NextLevel();
+        }
     }
 }

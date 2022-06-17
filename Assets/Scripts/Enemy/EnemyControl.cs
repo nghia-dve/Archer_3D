@@ -82,6 +82,9 @@ public class EnemyControl : MonoBehaviour
             {
                 checkDie = true;
                 animatorEnemy.SetTrigger("die");
+                UIManager.Instance.eXP += 10;
+                UIManager.Instance.homeUI.ChangeLevel();
+                GameData.SaveDataExpPlayer(UIManager.Instance.eXP);
             }
             StartCoroutine(DeactiveAfterEnemy(timeDie));
         }

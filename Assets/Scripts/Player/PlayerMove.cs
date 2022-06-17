@@ -21,7 +21,10 @@ public class PlayerMove : MonoBehaviour
 
     private void Update()
     {
+        GetComponent<Rigidbody>().velocity = Vector3.zero; 
         CheckMove();
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, -clampX, clampX),
+            Mathf.Clamp(transform.position.y, 0, 0), Mathf.Clamp(transform.position.z, -clampZ, clampZ));
     }
 
     private void CheckMove()
@@ -53,7 +56,6 @@ public class PlayerMove : MonoBehaviour
         }
         transform.rotation = Quaternion.LookRotation(vectorRotation);
 
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x, -clampX, clampX), 
-            Mathf.Clamp(transform.position.y, 0, 0), Mathf.Clamp(transform.position.z, -clampZ, clampZ));
+        
     }
 }

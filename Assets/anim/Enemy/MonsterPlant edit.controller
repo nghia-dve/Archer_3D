@@ -107,13 +107,13 @@ AnimatorController:
     m_Controller: {fileID: 0}
   - m_Name: timeDie
     m_Type: 1
-    m_DefaultFloat: 0
+    m_DefaultFloat: 7.32
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
   - m_Name: timeAttack
     m_Type: 1
-    m_DefaultFloat: 7.32
+    m_DefaultFloat: 2
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}

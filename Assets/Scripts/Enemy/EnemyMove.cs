@@ -43,6 +43,7 @@ public class EnemyMove : MonoBehaviour
     }
     private void Move()
     {
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
         enemyControl.enemyAttack.checkAttack = false;
         enemyControl.animatorEnemy.SetTrigger("run");
         transform.position += transform.forward * enemyControl.moveSpeed * Time.deltaTime;
@@ -52,11 +53,22 @@ public class EnemyMove : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player")|| collision.gameObject.CompareTag("enemy"))
         {
+            Debug.LogError(collision.gameObject.name);
             if(enemyControl.rigidbodyEnemy != null)
                 enemyControl.rigidbodyEnemy.isKinematic = true;
         }
     }
+
+    /*private void OnTriggerEnter(Collider other)
+    {
+        *//*if ( other.gameObject.CompareTag("enemy"))
+        {
+            
+            if (enemyControl.rigidbodyEnemy != null)
+                enemyControl.rigidbodyEnemy.isKinematic = true;
+        }*//*
+    }*/
 
 }
