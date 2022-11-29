@@ -16,6 +16,7 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+
     [HideInInspector]
     public PlayerAttack playerAttack;
 
@@ -23,7 +24,7 @@ public class PlayerControl : MonoBehaviour
     public PlayerMove playerMove;
 
     [HideInInspector]
-    public Animator animatorPlayer;    
+    public Animator animatorPlayer;
 
     [HideInInspector]
     public bool checkAttackSword = false;
@@ -31,7 +32,7 @@ public class PlayerControl : MonoBehaviour
     [HideInInspector]
     public bool checkAttackMagic = false;
 
-   /* public SwordAttack swordAttack;*/
+    /* public SwordAttack swordAttack;*/
 
     [Header("==Player==")]
     public float moveSpeedPlayer = 3;
@@ -45,11 +46,11 @@ public class PlayerControl : MonoBehaviour
 
     public GameObject swordWeapon;
 
-    [Header("==joystick==")]
-    public FloatingJoystick joystick;
+    //[Header("==joystick==")]
+    //public FloatingJoystick joystick;
 
     [Header("==enemy==")]
-    public Transform enemys;  
+    public Transform enemys;
 
     [Header("==Sword==")]
     public float damgeSword = 2;
@@ -60,7 +61,7 @@ public class PlayerControl : MonoBehaviour
     [Header("==nextLevel==")]
     public List<GameObject> listCubedis = new List<GameObject>();
 
-    public GameObject cubeActi ;
+    public GameObject cubeActi;
 
 
     private void Awake()
@@ -68,12 +69,12 @@ public class PlayerControl : MonoBehaviour
         playerAttack = gameObject.GetComponent<PlayerAttack>();
         playerMove = gameObject.GetComponent<PlayerMove>();
         animatorPlayer = gameObject.GetComponent<Animator>();
-        AddComponentWeapon(magicWeapon,false);
-        AddComponentWeapon(swordWeapon,true);
+        AddComponentWeapon(magicWeapon, false);
+        AddComponentWeapon(swordWeapon, true);
 
     }
 
-    private void AddComponentWeapon(GameObject gameObject,bool checkSword)
+    private void AddComponentWeapon(GameObject gameObject, bool checkSword)
     {
         gameObject.AddComponent<MeshCollider>();
         gameObject.AddComponent<Rigidbody>();
@@ -85,7 +86,7 @@ public class PlayerControl : MonoBehaviour
         {
             gameObject.AddComponent<SwordAttack>();
         }
-        
+
 
     }
 

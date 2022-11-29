@@ -32,7 +32,7 @@ public class SpawnFireBall : MonoBehaviour
 
     [Header("==ennemy==")]
     public EnemyControl enemyControl;
-    
+
 
     private void Start()
     {
@@ -56,7 +56,7 @@ public class SpawnFireBall : MonoBehaviour
             {
                 animator.SetFloat("fireRateMagic", fireRateFireBall);
                 DelaySpawn();
-                
+
             }
         }
 
@@ -74,7 +74,7 @@ public class SpawnFireBall : MonoBehaviour
                 return fB;
             }
         }
-        Debug.LogError("spawn");
+        //Debug.LogError("spawn");
         var fBN = Instantiate(fireBall, transform, rotation);
         listFireBallPool.Add(fBN);
         return fBN;
@@ -92,7 +92,7 @@ public class SpawnFireBall : MonoBehaviour
                 fireBallMove.Init(checkTagetPlayer);
                 fireBallMove.DMG = damgeMagic;
                 fireBallMove.speedFireBall = speedFireBall;
-            }    
+            }
             fireRateSpawn = delaySpawnFireBall / animator.GetFloat("fireRateMagic");
             if (checkTagetPlayer)
             {

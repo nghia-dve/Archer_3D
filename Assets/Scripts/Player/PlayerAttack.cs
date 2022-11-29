@@ -7,7 +7,7 @@ public class PlayerAttack : MonoBehaviour
     [HideInInspector]
     public Vector3 lookEnemy;
 
-    private float distanceAttackSword=2.5f;
+    private float distanceAttackSword = 2.5f;
     // Start is called before the first frame update
     private void Start()
     {
@@ -17,6 +17,7 @@ public class PlayerAttack : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        CheckEnemy();
     }
 
     public void SearchEnemy()
@@ -44,7 +45,7 @@ public class PlayerAttack : MonoBehaviour
             }
             lookEnemy = vectorMinPSEnemy;
         }
-        
+
     }
     public void AttackEnemySword()
     {
@@ -59,6 +60,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void CheckEnemy()
     {
+        if (InputManager.Instance.JoyStickDirection.magnitude <= 0.01f) return;
         SearchEnemy();
         if (Vector3.Distance(transform.position, lookEnemy) > distanceAttackSword && PlayerControl.Instance.enemys.childCount > 0)
         {
@@ -88,11 +90,11 @@ public class PlayerAttack : MonoBehaviour
         PlayerControl.Instance.magicWeapon.SetActive(true);
         PlayerControl.Instance.animatorPlayer.SetBool("isAttackSword", false);
         PlayerControl.Instance.animatorPlayer.SetBool("isAttackMagic", true);
-        transform.forward =new Vector3((lookEnemy - transform.position).x,0, (lookEnemy - transform.position).z);
+        transform.forward = new Vector3((lookEnemy - transform.position).x, 0, (lookEnemy - transform.position).z);
         PlayerControl.Instance.checkAttackSword = false;
         PlayerControl.Instance.checkAttackMagic = true;
 
     }
 
-    
+
 }

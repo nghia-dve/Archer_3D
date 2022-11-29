@@ -6,7 +6,7 @@ public class EnemyMove : MonoBehaviour
 {
     private EnemyControl enemyControl;
 
-    
+
 
     private void Start()
     {
@@ -15,12 +15,12 @@ public class EnemyMove : MonoBehaviour
 
     private void Update()
     {
-        if (enemyControl.searchPlayer.VisibleTargets.Count > 0&&enemyControl.checkDie==false)
+        if (enemyControl.searchPlayer.VisibleTargets.Count > 0 && enemyControl.checkDie == false)
         {
             transform.forward = /*Vector3.MoveTowards(transform.forward,*/(enemyControl.searchPlayer.VisibleTargets[0].position - transform.position)/*,2*Time.deltaTime)*/;
             if (enemyControl.checkCloseCombat)
             {
-                
+
                 if (Vector3.Distance(transform.position, enemyControl.searchPlayer.VisibleTargets[0].position) >= enemyControl.distanceCloseCombat)
                 {
                     Move();
@@ -28,7 +28,7 @@ public class EnemyMove : MonoBehaviour
             }
             if (!enemyControl.checkCloseCombat)
             {
-                if (Vector3.Distance(transform.position, enemyControl.searchPlayer.VisibleTargets[0].position) >= enemyControl.distanceCloseCombat+7)
+                if (Vector3.Distance(transform.position, enemyControl.searchPlayer.VisibleTargets[0].position) >= enemyControl.distanceCloseCombat + 7)
                 {
                     Move();
                 }
@@ -52,11 +52,11 @@ public class EnemyMove : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        
-        if (collision.gameObject.CompareTag("Player")|| collision.gameObject.CompareTag("enemy"))
+
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("enemy"))
         {
-            Debug.LogError(collision.gameObject.name);
-            if(enemyControl.rigidbodyEnemy != null)
+            Debug.LogWarning(collision.gameObject.name);
+            if (enemyControl.rigidbodyEnemy != null)
                 enemyControl.rigidbodyEnemy.isKinematic = true;
         }
     }

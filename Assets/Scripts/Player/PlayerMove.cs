@@ -1,6 +1,10 @@
 using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
+    [SerializeField]
+    private Transform model;
+
+    private Vector3 movingDir;
 
     [SerializeField]
     private float clampX = 4;
@@ -8,54 +12,39 @@ public class PlayerMove : MonoBehaviour
     [SerializeField]
     private float clampZ = 14f;
 
-    private float vertical;
-
-    private float horizontal;
-
-    private Vector3 vectorRotation;
-
-    private void Start()
-    {
-        
-    }
-
     private void Update()
     {
-        GetComponent<Rigidbody>().velocity = Vector3.zero; 
-        CheckMove();
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x, -clampX, clampX),
-            Mathf.Clamp(transform.position.y, 0, 0), Mathf.Clamp(transform.position.z, -clampZ, clampZ));
+        SetRigidbody();
+        GetTagetDir();
+        Move();
+        Amin();
     }
 
-    private void CheckMove()
+    private void SetRigidbody()
     {
-        vertical = PlayerControl.Instance.joystick.Vertical;
-        horizontal = PlayerControl.Instance.joystick.Horizontal;
-        if (vertical != 0 || horizontal != 0)
-        {
-            Move();
-            PlayerControl.Instance.animatorPlayer.SetBool("isRun", true);
-            PlayerControl.Instance.playerAttack.SearchEnemy();
-        }
-        else
-        if (vertical == 0 || horizontal == 0)
-        {
-            PlayerControl.Instance.animatorPlayer.SetBool("isRun", false);
-            PlayerControl.Instance.playerAttack.CheckEnemy();
-        }
-    }    
+        transform.parent.GetComponent<Rigidbody>().velocity = Vector3.zero;
+    }
+
+    private void GetTagetDir()
+    {
+        movingDir = InputManager.Instance.JoyStickDirection;
+    }
 
     private void Move()
     {
-        transform.position = new Vector3(transform.position.x + horizontal * PlayerControl.Instance.moveSpeedPlayer * Time.deltaTime,
-            transform.position.y, transform.position.z + vertical * PlayerControl.Instance.moveSpeedPlayer * Time.deltaTime);
+        if (movingDir.magnitude < 0.01f) return;
+        transform.parent.position += movingDir * PlayerControl.Instance.moveSpeedPlayer * Time.deltaTime;
+        model.rotation = Quaternion.LookRotation(movingDir);
+        transform.parent.position = new Vector3(Mathf.Clamp(transform.parent.position.x, -clampX, clampX),
+            Mathf.Clamp(transform.position.y, 0, 0), Mathf.Clamp(transform.parent.position.z, -clampZ, clampZ));
+    }
 
-        if (vertical != 0 || horizontal != 0)
-        {
-            vectorRotation = new Vector3(horizontal, 0, vertical);
-        }
-        transform.rotation = Quaternion.LookRotation(vectorRotation);
-
-        
+    private void Amin()
+    {
+        PlayerControl.Instance.animatorPlayer.SetBool("isRun", false);
+        //PlayerControl.Instance.playerAttack.CheckEnemy();
+        if (movingDir.magnitude < 0.01f) return;
+        PlayerControl.Instance.animatorPlayer.SetBool("isRun", true);
+        //PlayerControl.Instance.playerAttack.SearchEnemy();
     }
 }
