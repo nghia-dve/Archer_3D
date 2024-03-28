@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using Assets.GoblinsAndMagic.Scripts.Common.Tweens;
+﻿using Assets.GoblinsAndMagic.Scripts.Common.Tweens;
 using Assets.GoblinsAndMagic.Scripts.Data;
 using Assets.GoblinsAndMagic.Scripts.Enums;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.GoblinsAndMagic.Scripts
@@ -66,10 +66,12 @@ namespace Assets.GoblinsAndMagic.Scripts
             get { return State.Mp; }
             set { State.Mp = value; StatusBars.SetMp(State.Mp, Params.MpMax); }
         }
-       
+
         public void Start()
         {
             State.Hp = Params.HpMax;
+            if (transform.tag == "Player")
+                State.Hp = 9999999999;
             State.Mp = Params.MpMax;
             Engine.Instance.Creatures.Add(this);
         }
@@ -163,7 +165,7 @@ namespace Assets.GoblinsAndMagic.Scripts
             if (Mp < Params.MpConsumption) return;
 
             Mp -= Params.MpConsumption;
-            
+
             var direction = Mathf.Sign(Body.localScale.x);
             var shot = Instantiate(Params.ShotPrefab, transform.parent);
 
@@ -218,7 +220,7 @@ namespace Assets.GoblinsAndMagic.Scripts
                     {
                         _direction.y = Params.Jump;
                     }
-                    
+
                     if (Controls.Direction.magnitude > 0)
                     {
                         Turn(Controls.Direction.x);
